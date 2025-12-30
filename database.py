@@ -26,11 +26,13 @@ def get_db():
     Hint: Use sqlite3.connect() to create connection
     """
     # TODO: Implement database connection logic
-    if 'db' not in g:
+    if 'db' not in g:   # todo step 1
         # Your code here
-        pass
 
-    return g.db
+        g.db = sqlite3.connect(current_app.config['DATABASE']) # todo step 2
+        g.db.row_factory = sqlite3.Row  # todo step 3
+
+    return g.db # todo step 5
 
 
 def close_db(e=None):
@@ -42,11 +44,10 @@ def close_db(e=None):
     2. If db exists, close the connection
     """
     # TODO: Implement database closing logic
-    db = g.pop('db', None)
+    db = g.pop('db', None)  # todo step 1
 
     if db is not None:
-        # Your code here
-        pass
+        db.close()  # todo step 2
 
 
 def init_db():
@@ -69,7 +70,7 @@ def init_db():
     Hint: Use multi-line SQL string with triple quotes
     Hint: Use IF NOT EXISTS to make this safe to run multiple times
     """
-    db = get_db()
+    db = get_db()   # todo step 1
 
     # TODO: Create table schema
     # Example structure:
@@ -79,9 +80,18 @@ def init_db():
     #     )
     # ''')
     #
-    # db.execute('CREATE INDEX IF NOT EXISTS idx_category ON items(category)')
-    #
-    # db.commit()
+    db.execute('''CREATE TABLE IF NOT EXISTS items (
+               id INTEGER PRIMARY KEY AUTOINCREMENT, 
+               name TEXT NOT NULL,
+               category TEXT NOT NULL,
+               status TEXT NOT NULL,
+               created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+               updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+               )
+    ''')
+    
+    db.execute('CREATE INDEX IF NOT EXISTS idx_category ON items(category)')    # todo step 3
+    db.commit() # todo step 4
 
     print("Database initialized successfully")
 

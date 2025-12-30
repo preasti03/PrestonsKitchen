@@ -43,6 +43,13 @@ class Item:
             updated_at: Last update timestamp
         """
         # TODO: Validate and set attributes
+
+        if category not in self.VALID_CATEGORIES:
+            raise ValueError(f"Invalid category: {category}. Must be one of {self.VALID_CATEGORIES}")
+
+        if status not in self.VALID_STATUSES:
+            raise ValueError(f"Invalid status: {status}. Must be one of {self.VALID_STATUSES}")
+        
         self.id = id
         self.name = name
         self.category = category
@@ -69,10 +76,17 @@ class Item:
         # TODO: Implement save logic
         if self.id is None:
             # INSERT new item
-            pass
+            self.id = execute_db('''
+                                 INSERT INTO items (name, category, status)
+                                 VALUES (?, ?, ?)
+            ''', (self.name, self.category, self.status))
         else:
             # UPDATE existing item
-            pass
+            execute_db('''
+                       UPDATE items
+                       SET name = ?, category = ?, status = ?, updated_at = CURRENT_TIMESTAMP
+                       WHERE id = ?
+                       ''', (self.name, self.category, self.status, self.id))
 
         return self
 
@@ -170,12 +184,14 @@ class Item:
         # TODO: Implement get_all query
         if category:
             # Query with category filter
-            pass
+            query = 'SELECT * FROM items WHERE category = ? ORDER BY name'
+            rows = query_db(query, (category,))
         else:
             # Query all items
-            pass
+            query = 'SELECT * FROM items ORDER BY name'
+            rows = query_db(query) 
 
-        return []
+        return [cls.from_db_row(row) for row in rows]
 
     @classmethod
     def get_by_id(cls, item_id):
@@ -195,7 +211,10 @@ class Item:
             Item or None: Item object if found, None otherwise
         """
         # TODO: Implement get_by_id query
-        return None
+        query = 'SELECT * FROM items WHERE id = ?'
+        row = query_db(query, (item_id,), one=True)
+
+        return cls.from_db_row(row) if row else None
 
     @classmethod
     def get_by_status(cls, status, category=None):
