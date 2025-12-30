@@ -1,0 +1,62 @@
+<!--
+    Item Card Component
+    Displays a single inventory item with status indicator
+
+    Expected variables:
+    - item: Item object with properties (id, name, category, status)
+
+    TODO: Style this card in CSS to be:
+    - Mobile-friendly (large tap targets)
+    - Color-coded by status (green=plenty, yellow=running_low, red=out)
+    - Easy to read at a glance
+-->
+
+<div class="item-card" data-item-id="{{ item.id }}" data-status="{{ item.status }}">
+    <!-- Item Name -->
+    <div class="item-name">{{ item.name }}</div>
+
+    <!-- Status Indicator & Toggle -->
+    <div class="item-status">
+        <div class="status-badge status-{{ item.status }}">
+            {{ item.status.replace('_', ' ').title() }}
+        </div>
+
+        <!-- Status Toggle Buttons -->
+        <!-- TODO: Implement JavaScript to handle status changes -->
+        <div class="status-controls">
+            <button
+                class="status-btn status-btn-plenty {% if item.status == 'plenty' %}active{% endif %}"
+                onclick="updateItemStatus({{ item.id }}, 'plenty')"
+                title="Plenty"
+                aria-label="Set status to Plenty">
+                ✓
+            </button>
+            <button
+                class="status-btn status-btn-running-low {% if item.status == 'running_low' %}active{% endif %}"
+                onclick="updateItemStatus({{ item.id }}, 'running_low')"
+                title="Running Low"
+                aria-label="Set status to Running Low">
+                ⚠
+            </button>
+            <button
+                class="status-btn status-btn-out {% if item.status == 'out' %}active{% endif %}"
+                onclick="updateItemStatus({{ item.id }}, 'out')"
+                title="Out"
+                aria-label="Set status to Out">
+                ✗
+            </button>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="item-actions">
+        <!-- Delete button -->
+        <button
+            class="btn-icon btn-delete"
+            onclick="deleteItem({{ item.id }})"
+            title="Delete item"
+            aria-label="Delete {{ item.name }}">
+            🗑️
+        </button>
+    </div>
+</div>

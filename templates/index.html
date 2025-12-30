@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Inventory - Preston's Kitchen{% endblock %}
+
+{% block content %}
+<!-- Inventory Sections Container -->
+<div class="inventory-container">
+
+    <!-- PANTRY SECTION -->
+    <section class="inventory-section" id="pantry-section">
+        <div class="section-header">
+            <h2 class="section-title">Pantry</h2>
+            <button class="btn btn-primary" onclick="showAddItemModal('pantry')">
+                + Add Item
+            </button>
+        </div>
+
+        <!-- Status Filter Tabs (Optional - you can implement this later) -->
+        <!-- <div class="status-filters">
+            <button class="filter-btn active" data-status="all">All</button>
+            <button class="filter-btn" data-status="plenty">Plenty</button>
+            <button class="filter-btn" data-status="running_low">Running Low</button>
+            <button class="filter-btn" data-status="out">Out</button>
+        </div> -->
+
+        <!-- Pantry Items Grid -->
+        <div class="items-grid" id="pantry-items">
+            {% if pantry_items %}
+                {% for item in pantry_items %}
+                    {% include 'components/item_card.html' %}
+                {% endfor %}
+            {% else %}
+                <p class="empty-state">No pantry items yet. Add your first item!</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <!-- FRIDGE SECTION -->
+    <section class="inventory-section" id="fridge-section">
+        <div class="section-header">
+            <h2 class="section-title">Fridge</h2>
+            <button class="btn btn-primary" onclick="showAddItemModal('fridge')">
+                + Add Item
+            </button>
+        </div>
+
+        <!-- Fridge Items Grid -->
+        <div class="items-grid" id="fridge-items">
+            {% if fridge_items %}
+                {% for item in fridge_items %}
+                    {% include 'components/item_card.html' %}
+                {% endfor %}
+            {% else %}
+                <p class="empty-state">No fridge items yet. Add your first item!</p>
+            {% endif %}
+        </div>
+    </section>
+
+</div>
+
+<!-- Shopping List Button (Fixed at bottom on mobile) -->
+<div class="floating-action">
+    <button class="btn btn-shopping-list" onclick="showShoppingList()">
+        View Shopping List
+    </button>
+</div>
+
+<!-- Modal: Add Item -->
+<div id="add-item-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modal-title">Add New Item</h3>
+            <button class="close-btn" onclick="closeModal('add-item-modal')">&times;</button>
+        </div>
+
+        <form id="add-item-form" onsubmit="addItem(event)">
+            <input type="hidden" id="item-category" name="category" value="pantry">
+
+            <div class="form-group">
+                <label for="item-name">Item Name</label>
+                <input
+                    type="text"
+                    id="item-name"
+                    name="name"
+                    placeholder="e.g., Milk, Flour, Eggs"
+                    required
+                    autocomplete="off"
+                >
+            </div>
+
+            <!-- Quick-add common items (Optional enhancement) -->
+            <!--
+            TODO: Add quick-select buttons for common items
+            <div class="quick-add-buttons">
+                <button type="button" onclick="setItemName('Milk')">Milk</button>
+                <button type="button" onclick="setItemName('Eggs')">Eggs</button>
+                <button type="button" onclick="setItemName('Bread')">Bread</button>
+            </div>
+            -->
+
+            <div class="form-group">
+                <label for="item-status">Initial Status</label>
+                <select id="item-status" name="status">
+                    <option value="plenty" selected>Plenty</option>
+                    <option value="running_low">Running Low</option>
+                    <option value="out">Out</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('add-item-modal')">
+                    Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Add Item
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal: Shopping List -->
+<div id="shopping-list-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Shopping List</h3>
+            <button class="close-btn" onclick="closeModal('shopping-list-modal')">&times;</button>
+        </div>
+
+        <div id="shopping-list-content">
+            <!-- Shopping list items will be loaded here via JavaScript -->
+            <p class="loading">Loading...</p>
+        </div>
+
+        <!-- Future: LLM-enhanced shopping list button -->
+        <!--
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="generateSmartShoppingList()">
+                Generate Smart List with AI
+            </button>
+        </div>
+        -->
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // TODO: Implement these JavaScript functions in main.js
+    // - showAddItemModal(category)
+    // - closeModal(modalId)
+    // - addItem(event)
+    // - showShoppingList()
+    // - setItemName(name) [for quick-add buttons]
+
+    console.log('Inventory page loaded');
+    console.log('Pantry items:', {{ pantry_items|length }});
+    console.log('Fridge items:', {{ fridge_items|length }});
+</script>
+{% endblock %}

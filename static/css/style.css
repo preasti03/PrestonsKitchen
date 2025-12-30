@@ -1,0 +1,544 @@
+/*
+ * Preston's Kitchen - Stylesheet
+ * Mobile-first responsive design
+ *
+ * TODO: Customize colors, fonts, and spacing to your preference
+ * TODO: Add animations and transitions for better UX
+ * TODO: Ensure accessibility (contrast ratios, focus states)
+ */
+
+/* ============================================================================
+   VARIABLES & RESET
+   ============================================================================ */
+
+:root {
+    /* Color Palette - TODO: Customize these colors */
+    --color-primary: #2563eb;      /* Blue */
+    --color-primary-dark: #1e40af;
+    --color-secondary: #64748b;    /* Gray */
+    --color-success: #22c55e;      /* Green */
+    --color-warning: #f59e0b;      /* Orange */
+    --color-danger: #ef4444;       /* Red */
+
+    /* Status Colors */
+    --status-plenty: #22c55e;      /* Green */
+    --status-running-low: #f59e0b; /* Orange */
+    --status-out: #ef4444;         /* Red */
+
+    /* Neutral Colors */
+    --color-bg: #f8fafc;
+    --color-surface: #ffffff;
+    --color-text: #1e293b;
+    --color-text-light: #64748b;
+    --color-border: #e2e8f0;
+
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+
+    /* Typography */
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.5rem;
+    --font-size-2xl: 2rem;
+
+    /* Border Radius */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================================================
+   LAYOUT
+   ============================================================================ */
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+/* Header */
+.header {
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--spacing-lg) 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.app-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.app-subtitle {
+    font-size: var(--font-size-base);
+    color: var(--color-text-light);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: var(--spacing-xl) 0;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    padding: var(--spacing-lg) 0;
+    text-align: center;
+    color: var(--color-text-light);
+    font-size: var(--font-size-sm);
+    margin-top: auto;
+}
+
+/* ============================================================================
+   INVENTORY SECTIONS
+   ============================================================================ */
+
+.inventory-container {
+    /* TODO: Implement grid layout for larger screens */
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+.inventory-section {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.section-title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+/* Items Grid */
+.items-grid {
+    display: grid;
+    gap: var(--spacing-md);
+    /* Mobile-first: single column */
+    grid-template-columns: 1fr;
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--color-text-light);
+    padding: var(--spacing-xl);
+    font-style: italic;
+}
+
+/* ============================================================================
+   ITEM CARD
+   TODO: Customize the card design for your preference
+   ============================================================================ */
+
+.item-card {
+    background-color: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-md);
+    transition: all 0.2s ease;
+    /* TODO: Add border-left color indicator based on status */
+}
+
+.item-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+/* Status-based border colors - TODO: Implement this */
+.item-card[data-status="plenty"] {
+    border-left: 4px solid var(--status-plenty);
+}
+
+.item-card[data-status="running_low"] {
+    border-left: 4px solid var(--status-running-low);
+}
+
+.item-card[data-status="out"] {
+    border-left: 4px solid var(--status-out);
+}
+
+.item-name {
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    flex: 1;
+}
+
+.item-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.status-badge {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-plenty {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: var(--status-plenty);
+}
+
+.status-running-low {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--status-running-low);
+}
+
+.status-out {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--status-out);
+}
+
+/* Status Control Buttons */
+.status-controls {
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.status-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 2px solid var(--color-border);
+    background-color: var(--color-surface);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: var(--font-size-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    /* TODO: Increase tap target size for mobile (min 44x44px) */
+}
+
+.status-btn:hover {
+    transform: scale(1.05);
+}
+
+.status-btn:active {
+    transform: scale(0.95);
+}
+
+.status-btn-plenty.active {
+    background-color: var(--status-plenty);
+    border-color: var(--status-plenty);
+    color: white;
+}
+
+.status-btn-running-low.active {
+    background-color: var(--status-running-low);
+    border-color: var(--status-running-low);
+    color: white;
+}
+
+.status-btn-out.active {
+    background-color: var(--status-out);
+    border-color: var(--status-out);
+    color: white;
+}
+
+/* Item Actions */
+.item-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: var(--font-size-xl);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.btn-delete:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* ============================================================================
+   BUTTONS
+   ============================================================================ */
+
+.btn {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.btn-secondary {
+    background-color: var(--color-secondary);
+    color: white;
+}
+
+.btn-shopping-list {
+    background-color: var(--status-running-low);
+    color: white;
+    font-size: var(--font-size-lg);
+    padding: var(--spacing-md) var(--spacing-xl);
+    width: 100%;
+}
+
+/* Floating Action Button */
+.floating-action {
+    position: fixed;
+    bottom: var(--spacing-lg);
+    left: var(--spacing-md);
+    right: var(--spacing-md);
+    z-index: 100;
+}
+
+/* ============================================================================
+   MODAL
+   TODO: Add smooth animations for modal open/close
+   ============================================================================ */
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* TODO: Add fade-in animation */
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    /* TODO: Add slide-up animation */
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.modal-header h3 {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--color-text-light);
+    line-height: 1;
+    padding: 0;
+    width: 2rem;
+    height: 2rem;
+}
+
+.close-btn:hover {
+    color: var(--color-text);
+}
+
+/* ============================================================================
+   FORMS
+   ============================================================================ */
+
+form {
+    padding: var(--spacing-lg);
+}
+
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-base);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-family);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-end;
+    margin-top: var(--spacing-xl);
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   TODO: Test on actual devices and adjust breakpoints as needed
+   ============================================================================ */
+
+/* Tablet (768px and up) */
+@media (min-width: 768px) {
+    .items-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .floating-action {
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        max-width: 400px;
+    }
+
+    .inventory-container {
+        /* TODO: Consider side-by-side layout for pantry and fridge */
+    }
+}
+
+/* Desktop (1024px and up) */
+@media (min-width: 1024px) {
+    .items-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .inventory-container {
+        /* TODO: Implement 2-column layout for pantry and fridge side-by-side */
+        /* flex-direction: row; */
+    }
+}
+
+/* Large Desktop (1280px and up) */
+@media (min-width: 1280px) {
+    .items-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+.loading {
+    text-align: center;
+    color: var(--color-text-light);
+    padding: var(--spacing-xl);
+}
+
+/* TODO: Add more utility classes as needed */
+/* Examples: .hidden, .text-center, .mt-1, .mb-2, etc. */

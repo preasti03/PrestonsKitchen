@@ -1,0 +1,12 @@
+# Preston's Kitchen - Python Dependencies
+# Flask web framework
+Flask==3.0.0
+
+# Database
+# SQLite is included with Python, no additional package needed
+
+# Optional: For future deployment on Render
+gunicorn==21.2.0
+
+# Optional: For development
+python-dotenv==1.0.0
